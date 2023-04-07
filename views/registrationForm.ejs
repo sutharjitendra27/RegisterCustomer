@@ -1,0 +1,287 @@
+<%- include("./layouts/header.ejs") %>
+
+<body>
+
+    <section class="container">
+        <header>Practical Form</header>
+
+        <form class="form" id="form" name="form" action="/" method="POST">
+            <div class="input-box">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" placeholder="Enter your Full name" id="fname">
+                <span id="nameErr"></span>
+            </div>
+
+            <div class="input-box">
+                <label for="email">Email ID</label>
+                <input type="email" name="email" placeholder="Enter your email ID" id="email">
+                <span id="emailErr"></span>
+            </div>
+
+            <div class="input-box">
+                <label>Date of Birth</label>
+                <input type="date" name="dob" placeholder="Select Date" name="dob" id="dob" />
+                <span id="dobErr"></span>
+            </div>
+
+            <div class="input-box">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter password" id="password" />
+                <i class="fa fa-eye" id="togglePassword"></i>
+                <span id="passwordErr"></span>
+            </div>
+
+
+            <div class="input-box">
+                <label for="phone">Phone Number</label>
+                <input type="tel" name="phone" maxlength="10" placeholder="Enter your Mobile No" id="phone">
+                <span id="phoneErr"></span>
+            </div>
+
+            <div class="input-box address">
+                <label>Address</label> <span style="margin-left: 5px;" id="countryErr"></span>
+                <div class="column">
+                    <div class="select-box">
+                        <select id="country" name="country">
+                            <option disabled selected>--Select Country--</option>
+                            <option value="America">America</option>
+                            <option value="Japan">Japan</option>
+                            <option value="India">India</option>
+                            <option value="Nepal">Nepal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <textarea name="address" name="address" id="address" cols="20" rows="10" placeholder="Enter Address"></textarea>
+                <span id="addressErr"></span>
+
+            </div>
+
+            <button type="submit">Submit</button>
+            <!-- <input type="submit" value="Register"> -->
+
+        </form>
+    </section>
+
+    <script>
+
+        // function for hide/show password
+        var togglePassword = document.querySelector('#togglePassword');
+        // var password = document.querySelector('#password');
+        var password = document.getElementById('password');
+        togglePassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye slash icon
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        const form = document.getElementById("form");
+        const fname = document.getElementById("fname");
+        const email = document.getElementById("email");
+        const dob = document.getElementById("dob");
+        // const password = document.getElementById("password");
+        const phone = document.getElementById("phone");
+        const country = document.getElementById("country");
+        const address = document.getElementById("address");
+
+        const nameErr = document.getElementById("nameErr");
+        const emailErr = document.getElementById("emailErr");
+        const dobErr = document.getElementById("dobErr");
+        const passwordErr = document.getElementById("passwordErr");
+        const phoneErr = document.getElementById("phoneErr");
+        const countryErr = document.getElementById("countryErr");
+        const addressErr = document.getElementById("addressErr");
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // prevent the form from submitting
+
+            let isValid = true;
+
+            // validate name field
+            if (!fname.value.trim().match(/^[A-Za-z\s]+$/)) {
+                nameErr.innerText = 'Please enter a valid name with only alphabets and a minimum length of 2 characters.';
+                isValid = false;
+            } else {
+                nameErr.innerText = '';
+            }
+
+            // validate email field
+            if (!email.value.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                emailErr.innerText = 'Please enter a valid email address.';
+                isValid = false;
+            } else {
+                emailErr.innerText = '';
+            }
+
+            // validate date
+            if (!dob.value) {
+                dobErr.innerText = 'Please select a date.';
+                isValid = false;
+            } else {
+                dobErr.innerText = '';
+            }
+
+            // validate mobile number field
+            if (!phone.value.trim().match(/^[0-9]{10}$/)) {
+                phoneErr.innerText = 'Please enter a valid 10-digit mobile number.';
+                isValid = false;
+            } else {
+                phoneErr.innerText = '';
+            }
+
+            // validate password field
+            if (password.value.trim().length < 8) {
+                passwordErr.innerText = 'Please enter a password with a minimum length of 8 characters.';
+                isValid = false;
+            } else {
+                passwordErr.innerText = '';
+            }
+
+            // validate country field
+            if (country.selectedIndex === 0) {
+                countryErr.innerText = 'Please select a country.';
+                isValid = false;
+            } else {
+                countryErr.innerText = '';
+            }
+
+            if (address.value === '') {
+                // dropdownInput.nextElementSibling.innerText = 'Please choose an option.';
+                addressErr.innerHTML = 'Please write address.'
+                isValid = false;
+            } else {
+                // dropdownInput.nextElementSibling.innerText = '';
+                addressErr.innerHTML = '';
+            }
+
+            // submit the form if all fields are valid
+            if (isValid) {
+                form.submit();
+            }
+        });
+
+        // functions for blur events
+        fname.addEventListener('blur', function (event) {
+            if (!fname.value.trim().match(/^[A-Za-z\s]+$/)) {
+                nameErr.innerText = 'Please enter a valid name with only alphabets and a minimum length of 2 characters.';
+            } else {
+                nameErr.innerText = '';
+            }
+        });
+
+        email.addEventListener('blur', function (event) {
+            if (!email.value.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                emailErr.innerText = 'Please enter a valid email address.';
+            } else {
+                emailErr.innerText = '';
+            }
+        });
+
+        phone.addEventListener('blur', function (event) {
+            if (!phone.value.trim().match(/^[0-9]{10}$/)) {
+                phoneErr.innerText = 'Please enter a valid 10-digit mobile number.';
+            } else {
+                phoneErr.innerText = '';
+            }
+        });
+
+        dob.addEventListener('blur', function (event) {
+            if (!dob.value) {
+                dobErr.innerText = 'Please select a date.';
+                isValid = false;
+            } else {
+                dobErr.innerText = '';
+            }
+        })
+
+        password.addEventListener('blur', function (event) {
+            if (password.value.trim().length < 8) {
+                passwordErr.innerText = 'Please enter a password with a minimum length of 8 characters.';
+            } else {
+                passwordErr.innerText = '';
+            }
+        });
+
+        country.addEventListener('blur', function (event) {
+            if (country.selectedIndex === 0) {
+                countryErr.innerText = 'Please select an option.';
+            } else {
+                countryErr.innerText = '';
+            }
+        });
+
+        address.addEventListener('blur', function (event) {
+            if (address.value === '') {
+                addressErr.innerHTML = 'Please write address.'
+                isValid = false;
+            } else {
+                addressErr.innerHTML = '';
+            }
+        });
+
+        // functions for input/change events
+        fname.addEventListener('input', function (event) {
+            if (!fname.value.trim().match(/^[A-Za-z\s]+$/)) {
+                nameErr.innerText = 'Please enter a valid name with only alphabets and a minimum length of 2 characters.';
+            } else {
+                nameErr.innerText = '';
+            }
+        });
+
+        email.addEventListener('input', function (event) {
+            if (!email.value.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                emailErr.innerText = 'Please enter a valid email address.';
+            } else {
+                emailErr.innerText = '';
+            }
+        });
+
+        phone.addEventListener('input', function (event) {
+            if (!phone.value.trim().match(/^[0-9]{10}$/)) {
+                phoneErr.innerText = 'Please enter a valid 10-digit mobile number.';
+            } else {
+                phoneErr.innerText = '';
+            }
+        });
+
+        password.addEventListener('input', function (event) {
+            if (password.value.trim().length < 8) {
+                passwordErr.innerText = 'Please enter a password with a minimum length of 8 characters.';
+            } else {
+                passwordErr.innerText = '';
+            }
+        });
+
+        dob.addEventListener('input', function (event) {
+            if (!dob.value) {
+                dobErr.innerText = 'Please select a date.';
+                isValid = false;
+            } else {
+                dobErr.innerText = '';
+            }
+        })
+
+        country.addEventListener('input', function (event) {
+            if (country.selectedIndex === 0) {
+                countryErr.innerText = 'Please select an option.';
+            } else {
+                countryErr.innerText = '';
+            }
+        });
+
+        address.addEventListener('input', function (event) {
+            if (address.value === '') {
+                addressErr.innerHTML = 'Please write address.'
+                isValid = false;
+            } else {
+                addressErr.innerHTML = '';
+            }
+        });
+
+    </script>
+
+</body>
+
+<%- include("./layouts/footer.ejs") %>
