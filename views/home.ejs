@@ -12,6 +12,7 @@
             font-family: Arial, sans-serif;
             font-size: 14px;
             text-align: left;
+            
         }
 
         th {
@@ -65,7 +66,7 @@
                     <td><%= cust.dob %></td>
                     <td><%= cust.phone %></td>
                     <td>
-                        <form action="/user-delete" method="POST">
+                        <form action="/delete-customer" method="POST">
                             <input type="hidden" value="<%= cust.id %>" name="userId">
                             <button class="col2 btn" type="submit">Delete</button>
                         </form>
